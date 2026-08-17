@@ -37,7 +37,7 @@ const InputButton = (props:{value:string}) => {
     const Sequence = useSequence();
 
     const [touched, setTouched] = useState(false);
-    const fadeTimeout = useRef<ReturnType<typeof setInterval>>(undefined);
+    const fadeTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
     useEffect(()=>{
         clearTimeout(fadeTimeout.current);

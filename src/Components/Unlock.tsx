@@ -1,8 +1,21 @@
+import { useEffect, useRef, useState } from "react";
 import { SequenceStyles, useSequence } from "../Context/SequenceContext";
+import { useProvence } from "../Provence/ProvenceHooks";
 
 export const Unlock = () => {
 
     const Sequence = useSequence();
+    const Provence = useProvence();
+
+    const [flash, setFlash] = useState(false);
+
+    const flashTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+    useEffect(()=>{
+        clearTimeout(flashTimeout.current);
+        flash && (flashTimeout.current = setTimeout(()=> setFlash(false), 250));
+        flash && Provence.triggerTouchPad?.('A5');
+    },[flash]);
 
     return(
         <div style={{
@@ -18,7 +31,7 @@ export const Unlock = () => {
             transitionDelay: Sequence.mazeAComplete ? '750ms' : '0ms',
             zIndex:2,
         }} onClick={()=>{
-            
+            Sequence.mazeAComplete && setFlash(true);
         }}>
             <div style={{
                 display:'flex',
@@ -34,6 +47,15 @@ export const Unlock = () => {
             }}>
                 UNLOCK
             </div>
+            <div style={{
+                position:'absolute',
+                width:'100%',
+                height:'100%',
+                opacity: flash ? 1 : 0,
+                backgroundColor:SequenceStyles.levelFour,
+                mixBlendMode:'screen',
+                transition:'opacity 100ms ease',
+            }}></div>
         </div>
     )
 
