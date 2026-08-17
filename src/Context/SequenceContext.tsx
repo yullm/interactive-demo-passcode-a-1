@@ -63,12 +63,19 @@ export const SequenceProvider = () => {
         setStage(args.stage);
     };
 
+    const handleReset = () => {
+        setPasscodeInput([]);
+        setStage(0);
+    };
+
     useEffect(()=>{
         Provence.registerTouchPadListener?.('passcode-a-passcode-input', handleRemoteInput);
         Provence.registerTouchPadListener?.('passcode-a-passcode-set-stage', handleSetStage);
+        Provence.registerTouchPadListener?.('reset', handleReset);
         return(()=>{
             Provence.unregisterTouchPadListener?.('passcode-a-passcode-input', handleRemoteInput);            
             Provence.unregisterTouchPadListener?.('passcode-a-passcode-set-stage', handleSetStage);
+            Provence.unregisterTouchPadListener?.('reset', handleReset);
         });
     },[]);
 

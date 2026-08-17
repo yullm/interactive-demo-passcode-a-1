@@ -10,10 +10,12 @@ export const PasscodeEntry = () => {
             ...SequenceStyles.borderContainer,
             ...SequenceStyles.center,
             position:'absolute',
-            bottom:'5vh',
+            bottom: Sequence.stage  === 0 ? '5vh' : '-20vh',
             padding:'1vw',
             borderWidth:'1vw',
             gap:'1vw',
+            transition: 'bottom 1s ease',
+            transitionDelay: '0.5s',
         }}>
             <InputButton value="1"></InputButton>
             <InputButton value="2"></InputButton>
@@ -52,9 +54,10 @@ const InputButton = (props:{value:string}) => {
                 fontSize:'3vw',
                 borderColor:touched ? SequenceStyles.levelThree : SequenceStyles.levelOne,
                 color:touched ? SequenceStyles.levelThree : SequenceStyles.levelOne,
+                transform: touched ? 'translateY(0.25vw)' : undefined,
                 fontWeight:800,
                 textAlign:'center',
-                transition:'color 250ms ease, border-color 250ms ease',
+                transition:'all 250ms ease',
             }}
             onClick={()=>{
                 setTouched(true);
