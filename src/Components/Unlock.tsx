@@ -17,6 +17,12 @@ export const Unlock = () => {
         flash && Provence.triggerTouchPad?.('A5');
     },[flash]);
 
+    const [canUnlock, setCanUnlock] = useState(false);
+
+    useEffect(()=>{
+        (Sequence.mazeAComplete && Sequence.mazeBComplete) ? setCanUnlock(true) : setCanUnlock(false);
+    },[Sequence.mazeAComplete,Sequence.mazeBComplete]);
+
     return(
         <div style={{
             ...SequenceStyles.center,
@@ -25,13 +31,13 @@ export const Unlock = () => {
             top: Sequence.stage === 1 ? '3.5vh' : '-100vh',
             width:'90vw',
             height:'90vh',
-            backgroundColor: Sequence.mazeAComplete ? SequenceStyles.levelThree : SequenceStyles.levelZero,
-            borderColor: Sequence.mazeAComplete ? SequenceStyles.levelFour : SequenceStyles.levelOne,
+            backgroundColor: canUnlock ? SequenceStyles.levelThree : SequenceStyles.levelZero,
+            borderColor: canUnlock ? SequenceStyles.levelFour : SequenceStyles.levelOne,
             transition:'top 1s ease, border-color 250ms ease, background-color 250ms ease',
-            transitionDelay: Sequence.mazeAComplete ? '750ms' : '0ms',
+            transitionDelay: canUnlock ? '750ms' : '0ms',
             zIndex:2,
         }} onClick={()=>{
-            Sequence.mazeAComplete && setFlash(true);
+            canUnlock && setFlash(true);
         }}>
             <div style={{
                 display:'flex',
@@ -39,9 +45,9 @@ export const Unlock = () => {
                 height:'100%',
                 position:'relative',
                 ...SequenceStyles.center,
-                color: Sequence.mazeAComplete ? SequenceStyles.levelFour : SequenceStyles.levelOne,                
+                color: canUnlock ? SequenceStyles.levelFour : SequenceStyles.levelOne,                
                 transition:'color 250ms ease',
-                transitionDelay: Sequence.mazeAComplete ? '750ms' : '0ms',
+                transitionDelay: canUnlock ? '750ms' : '0ms',
                 fontWeight:800,
                 fontSize:'20vh',
             }}>

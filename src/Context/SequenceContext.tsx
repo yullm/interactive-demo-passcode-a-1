@@ -76,7 +76,7 @@ export const SequenceProvider = () => {
     const [mazeBComplete, setMazeBComplete] = useState(false);
 
     const handleMazeBEvents = (buttonID:string, args:{complete:boolean}) => {
-        setMazeAComplete(args.complete);
+        setMazeBComplete(args.complete);
     };
 
     const handleReset = () => {
