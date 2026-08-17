@@ -3,11 +3,9 @@ import { SequenceStyles, useSequence } from "../Context/SequenceContext";
 import { PasscodeDisplay } from "./PasscodeDisplay";
 import { PasscodeEntry } from "./PasscodeEntry";
 import { ProvenceHook, useProvence } from "../Provence/ProvenceHooks";
+import { Unlock } from "./Unlock";
 
 export const Container = () => {
-
-    const Provence = useProvence();
-    const Sequence = useSequence();
 
     return(
         <div style={{
@@ -23,6 +21,7 @@ export const Container = () => {
             backgroundColor:SequenceStyles.levelZero,
             userSelect:'none',
         }}>
+            <Unlock></Unlock>
             <PasscodeDisplay></PasscodeDisplay>
             <PasscodeEntry></PasscodeEntry>
         </div>

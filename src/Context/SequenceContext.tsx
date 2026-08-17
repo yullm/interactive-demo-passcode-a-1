@@ -7,10 +7,14 @@ const SequenceContext = createContext<{
     passcodeAnswer:string[],
     passcodeInput:string[],
     onPasscodeInput?:(value:string)=>void,
+    mazeAComplete:boolean,
+    mazeBComplete:boolean,
 }>({
     stage:0,
     passcodeAnswer:['4','5','1','2'],
     passcodeInput:[],
+    mazeAComplete:false,
+    mazeBComplete:false,
 });
 
 export const useSequence = () => useContext(SequenceContext);
@@ -63,18 +67,36 @@ export const SequenceProvider = () => {
         setStage(args.stage);
     };
 
+    const [mazeAComplete, setMazeAComplete] = useState(false);
+
+    const handleMazeAEvents = (buttonID:string, args:{complete:boolean}) => {
+        setMazeAComplete(args.complete);
+    };
+
+    const [mazeBComplete, setMazeBComplete] = useState(false);
+
+    const handleMazeBEvents = (buttonID:string, args:{complete:boolean}) => {
+        setMazeAComplete(args.complete);
+    };
+
     const handleReset = () => {
         setPasscodeInput([]);
+        setMazeAComplete(false);
+        setMazeBComplete(false);
         setStage(0);
     };
 
     useEffect(()=>{
         Provence.registerTouchPadListener?.('passcode-a-passcode-input', handleRemoteInput);
         Provence.registerTouchPadListener?.('passcode-a-passcode-set-stage', handleSetStage);
+        Provence.registerTouchPadListener?.('passcode-a-maze-a',handleMazeAEvents);        
+        Provence.registerTouchPadListener?.('passcode-a-maze-b',handleMazeBEvents);
         Provence.registerTouchPadListener?.('reset', handleReset);
         return(()=>{
             Provence.unregisterTouchPadListener?.('passcode-a-passcode-input', handleRemoteInput);            
             Provence.unregisterTouchPadListener?.('passcode-a-passcode-set-stage', handleSetStage);
+            Provence.unregisterTouchPadListener?.('passcode-a-maze-a',handleMazeAEvents);
+            Provence.unregisterTouchPadListener?.('passcode-a-maze-b',handleMazeBEvents);
             Provence.unregisterTouchPadListener?.('reset', handleReset);
         });
     },[]);
@@ -84,6 +106,8 @@ export const SequenceProvider = () => {
             stage:stage,
             passcodeInput:passcodeInput,
             passcodeAnswer:passcodeAnswer,
+            mazeAComplete:mazeAComplete,
+            mazeBComplete:mazeBComplete,
             onPasscodeInput:onPasscodeInput,
         }}>
             <Container></Container>
